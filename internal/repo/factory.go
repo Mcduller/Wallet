@@ -7,13 +7,21 @@ import (
 
 type RepoFactoryImpl struct {
 	SegmentCnt int
-	DBUrl      string
+	DBConfig   DBConfig
 }
 
-func NewRepoFactory(segmentCnt int, DBUrl string) RepositoryFactory {
+type DBConfig struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+	DBName   string
+}
+
+func NewRepoFactory(segmentCnt int, dbConfig DBConfig) RepositoryFactory {
 	return RepoFactoryImpl{
 		SegmentCnt: segmentCnt,
-		DBUrl:      DBUrl,
+		DBConfig:   dbConfig,
 	}
 }
 
@@ -23,13 +31,12 @@ var RepoTypeMem RepoType = "memory"
 var RepoTypeMysql RepoType = "mysql"
 
 func (r RepoFactoryImpl) GetRepository(ctx context.Context, repoType RepoType) (Repository, error) {
-	//TODO implement me
 	switch repoType {
 	case RepoTypeMem:
 		return NewMemoryRepo(r.SegmentCnt), nil
 	case RepoTypeMysql:
-		// todo 替换为mysql实现
-		return nil, nil
+		// TODO: 替换为MySQL实现
+		return nil, fmt.Errorf("mysql repository not implemented yet, use 'memory' type")
 	default:
 		return nil, fmt.Errorf("unknown repo type: %s", repoType)
 	}
