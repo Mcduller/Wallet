@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"wallet_service/config"
@@ -31,7 +32,8 @@ func main() {
 	)
 
 	repoType := repo.RepoType(cfg.Repository.Type)
-	repository, err := repoFactory.GetRepository(nil, repoType)
+	ctx := context.Background()
+	repository, err := repoFactory.GetRepository(ctx, repoType)
 	if err != nil {
 		log.Fatalf("Failed to create repository: %v", err)
 	}

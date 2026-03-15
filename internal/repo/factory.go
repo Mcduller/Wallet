@@ -35,8 +35,7 @@ func (r RepoFactoryImpl) GetRepository(ctx context.Context, repoType RepoType) (
 	case RepoTypeMem:
 		return NewMemoryRepo(r.SegmentCnt), nil
 	case RepoTypeMysql:
-		// TODO: 替换为MySQL实现
-		return nil, fmt.Errorf("mysql repository not implemented yet, use 'memory' type")
+		return NewMySQLRepo(r.DBConfig)
 	default:
 		return nil, fmt.Errorf("unknown repo type: %s", repoType)
 	}
